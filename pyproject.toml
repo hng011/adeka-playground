@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adeka-playground"
+version = "0.1.0"
+description = "Playground to explore Google ADK"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "bs4>=0.0.2",
+    "google-adk>=1.16.0",
+    "python-dotenv>=1.1.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
