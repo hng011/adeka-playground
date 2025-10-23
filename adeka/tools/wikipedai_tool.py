@@ -1,25 +1,22 @@
-import requests
-from bs4 import BeautifulSoup
+import wikipedia
 
 def search_wikipedia_tool(query: str) -> str:
-    """Search Wikipedia and return summarized content."""
-    try:
-        search_url = f"https://en.wikipedia.org/wiki/{query.replace(' ', '_')}"
-        headers = {"User-Agent": "Mozilla/5.0"}
-        response = requests.get(search_url, headers=headers)
-        if response.status_code != 200:
-            return f"Could not find Wikipedia page for '{query}'."
-        
-        soup = BeautifulSoup(response.text, "html.parser")
-        
-        content_nodes = soup.select("#mw-content-text p, #mw-content-text li, p")
-        
-        parts = [n.get_text(separator=" ", strip=True) for n in content_nodes[:10]]
-        text = " ".join(p for p in parts if p)
-        
-        print("DEBUG: ", text)
-        
-        return text.strip()
+    """
+    Search Wikipedia using the official API and return a summary.
+    """
     
+    try:
+        summary = wikipedia.summary(query, sentences=5, auto_suggest=False)
+        return summary.strip()
+
+    except wikipedia.exceptions.DisambiguationError as e:
+        options = e.options[:5]
+         
+        return (f"Your query '{query}' is ambiguous and could refer to multiple topics. "
+                f"Which one did you mean? Some options are: {', '.join(options)}")
+
+    except wikipedia.exceptions.PageError:
+        return f"Sorry, I could not find a Wikipedia page for '{query}'."
+
     except Exception as e:
-        return f"Error fetching data: {e}"
+        return f"An error occurred while fetching data: {e}"

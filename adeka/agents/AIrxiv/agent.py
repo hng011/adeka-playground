@@ -1,6 +1,8 @@
 from google.adk.agents import Agent
 from adeka.configs.main_config import *
+from adeka.configs.ai_config import *
 from adeka.tools.airxiv_tool import *
+
 
 AGENT_DESCRIPTION = "An Agent that helps to explore arXiv site"
 AGENT_INSTRUCTION = (
@@ -18,5 +20,6 @@ root_agent = Agent(
     name=AIRXIV_AGENT_NAME,
     description=AGENT_DESCRIPTION,
     instruction=AGENT_INSTRUCTION,
-    tools=[search_latest_arxiv]
+    generate_content_config=CONFIG_1,
+    tools=[search_latest_arxiv],
 )
